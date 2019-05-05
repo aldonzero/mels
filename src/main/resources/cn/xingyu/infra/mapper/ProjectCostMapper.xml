@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xingyu.infra.mapper.ProjectCostMapper">
+  <resultMap id="BaseResultMap" type="cn.xingyu.domain.entity.ProjectCostEVO">
+    <id column="id"  property="id" />
+    <id column="no"  property="no" />
+    <id column="type"  property="type" />
+    <id column="cost_date"  property="costDate" />
+    <id column="cost"  property="cost" />
+    <id column="agent"  property="agent" />
+    <id column="state"  property="state" />
+    <id column="remark"  property="remark" />
+    <collection property="project" ofType="cn.xingyu.domain.entity.Project">
+      <id property="id" column="id"/>
+      <result property="no" column="project_no"/>
+    </collection>
+    <collection property="machinery" ofType="cn.xingyu.domain.entity.Machinery">
+      <id property="id" column="id"/>
+      <result property="no" column="machinery_no"/>
+    </collection>
+  </resultMap>
+
+
+  <select id="list" parameterType="map" resultMap="BaseResultMap">
+     SELECT project_cost.*,project.`no` project_no,machinery.`no` machinery_no from project_cost
+    LEFT JOIN project ON project_cost.project_id = project.id
+    LEFT JOIN machinery ON project_cost.machinery_id = machinery.id
+    limit #{currIndex} , #{pageSize}
+  </select>
+
+  <select id="listCount" parameterType="map" resultType="java.lang.Integer"  >
+    SELECT count(1) from project_cost
+    LEFT JOIN project ON project_cost.project_id = project.id
+    LEFT JOIN machinery ON project_cost.machinery_id = machinery.id
+  </select>
+
+</mapper>

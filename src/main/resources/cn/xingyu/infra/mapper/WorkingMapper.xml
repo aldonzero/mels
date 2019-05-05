@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xingyu.infra.mapper.WorkingMapper">
+  <resultMap id="BaseResultMap" type="cn.xingyu.domain.entity.WorkingEVO">
+    <id column="id"  property="id" />
+    <id column="no"  property="no" />
+    <id column="working_hour"  property="workingHour" />
+    <id column="working_date"  property="workingDate" />
+    <id column="price"  property="price" />
+    <id column="agent"  property="agent" />
+    <id column="state"  property="state" />
+    <id column="remark"  property="remark" />
+    <collection property="project" ofType="cn.xingyu.domain.entity.Project">
+      <id property="id" column="id"/>
+      <result property="no" column="project_no"/>
+    </collection>
+    <collection property="machinery" ofType="cn.xingyu.domain.entity.Machinery">
+      <id property="id" column="id"/>
+      <result property="no" column="machinery_no"/>
+    </collection>
+  </resultMap>
+
+
+  <select id="list" parameterType="map" resultMap="BaseResultMap">
+    SELECT working.*,project.`no` project_no,machinery.`no` machinery_no from working LEFT JOIN project ON working.project_id = project.id
+    LEFT JOIN machinery ON working.machinery_id = machinery.id
+    limit #{currIndex} , #{pageSize}
+  </select>
+
+  <select id="listCount" parameterType="map" resultType="java.lang.Integer"  >
+    SELECT count(1) from working LEFT JOIN project ON working.project_id = project.id
+    LEFT JOIN machinery ON working.machinery_id = machinery.id
+  </select>
+
+</mapper>

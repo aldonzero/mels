@@ -15,7 +15,9 @@ public class Role {
     @GeneratedValue(generator = "JDBC")
   private Long id;
   private String name;
-  private String available;
+  private String code;
+  private String description;
+  private Boolean available;
 
 
 }
