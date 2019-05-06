@@ -61,6 +61,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         return pageResult;
     }
 
+    @Override
+    public T find(T t) {
+        return mapper.selectOne(t);
+    }
+
     /**
      * 获取Id注解的属性的值
      * @param t

@@ -34,6 +34,10 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission>
             criteria.orEqualTo("parentid",0);
         }
 
+        if(permission.getAvailable() != null){
+            criteria.andEqualTo("available",permission.getAvailable());
+        }
+
         PageResult pageResult = new PageResult();
         Property property = new Property();
         PageHelper.startPage(pagination.getPage(), pagination.getPageSize(), pagination.getSort());
@@ -70,5 +74,9 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission>
         return treeList;
     }
 
+    @Override
+    public List<String> listCode(Long userId) {
+        return permissionMapper.listCode(userId);
+    }
 }
 

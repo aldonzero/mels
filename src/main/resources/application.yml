@@ -42,4 +42,6 @@ logging:
     cn.xingyu.infra.mapper: debug
 
 
-#  cn.xingyu.api.service
+jasypt:
+  encryptor:
+    password: aceszxdrtfc!!!

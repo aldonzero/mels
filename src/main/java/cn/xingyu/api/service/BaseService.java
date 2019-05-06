@@ -13,4 +13,6 @@ public interface BaseService<T> {
     T findById(T t);
 
     PageResult list(Pagination<T> pagination,T t);
+
+    T find(T t);
 }

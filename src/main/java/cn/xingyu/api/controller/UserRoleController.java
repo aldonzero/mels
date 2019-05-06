@@ -37,20 +37,20 @@ public class UserRoleController {
     @PutMapping
     public Result update(@RequestBody UserRoleEVO userRoleEVO) {
         service.delete(userRoleEVO.getUserId());
-
-        List<UserRole> userRoles = new ArrayList<>();
-        for (Long roleId:userRoleEVO.getRoleIds()) {
-            UserRole userRole = new UserRole();
-            userRole.setUserId(userRoleEVO.getUserId());
-            userRole.setRoleId(roleId);
-            userRoles.add(userRole);
-        }
-
-
         String msg = ResultStatus.UPDATE_SUCCESS.getStatusMsg();
-        if (service.insetList(userRoles) <= 0) {
-            msg = "修改失败";
+        if (userRoleEVO.getRoleIds() != null){
+            List<UserRole> userRoles = new ArrayList<>();
+            for (Long roleId:userRoleEVO.getRoleIds()) {
+                UserRole userRole = new UserRole();
+                userRole.setUserId(userRoleEVO.getUserId());
+                userRole.setRoleId(roleId);
+                userRoles.add(userRole);
+            }
+            if (service.insetList(userRoles) <= 0) {
+                msg = "修改失败";
+            }
         }
+
         Result result = new Result();
         result.setCode(ResultStatus.UPDATE_SUCCESS.getStatusCode());
         result.setMsg(msg);
