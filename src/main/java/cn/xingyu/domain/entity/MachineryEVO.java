@@ -6,24 +6,23 @@ import tk.mybatis.mapper.code.IdentityDialect;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import java.util.Date;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
-public class Bill {
+public class MachineryEVO {
     @Id
     @KeySql(useGeneratedKeys = true,dialect=IdentityDialect.MYSQL)
     @GeneratedValue(generator = "JDBC")
   private Long id;
   private String no;
-  private Long projectId;
-  private BigDecimal quantities;
-  private BigDecimal price;
-  private String agent;
-  private Date payDate;
+  private String model;
+  private String brand;
+  private MachineryType machineryType;
+  private BigDecimal purchasingPrice;
+  private Date purchasingDate;
   private Long state;
-  private String remark;
+  private String description;
 
 
 }

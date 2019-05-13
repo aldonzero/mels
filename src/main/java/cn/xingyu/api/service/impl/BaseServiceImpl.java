@@ -55,13 +55,17 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         Property property = new Property();
         PageHelper.startPage(pagination.getPage(), pagination.getPageSize(), pagination.getSort());
         PageHelper.orderBy(pagination.getOrderBy() == null ? String.valueOf(idGet(t)) : pagination.getOrderBy());
-
+        e = getExample(e,t);
         pageResult.setList(mapper.selectByExample(e));
         pageResult.setTotal(mapper.selectCountByExample(e));
         return pageResult;
     }
 
-    @Override
+    public Example getExample(Example e,T t){
+        return e;
+    }
+
+  @Override
     public T find(T t) {
         return mapper.selectOne(t);
     }

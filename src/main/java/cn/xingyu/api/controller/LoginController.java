@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +43,7 @@ public class LoginController {
     private PermissionService permissionService;
 
     @PostMapping("/login")
-    public Result findById(@RequestBody UserEVO userEVO) {
+    public Result findById(@RequestBody UserEVO userEVO,HttpServletRequest request) {
         logger.info("userInfo is" + userEVO.toString());
         Result result = new Result();
         String msg = "error";
@@ -56,9 +58,20 @@ public class LoginController {
                 logger.info("the new password is :" + password);
                 if (password.equals(userEVO.getPassword())){
                     msg = "success";
+
+                    HttpSession sessoin=request.getSession();//这就是session的创建
+                    sessoin.setAttribute("userId",user.getId());
+
+                    CurrentUser currentUser = new CurrentUser();
+                    currentUser.setUserid(user.getId());
+                    currentUser.setName(user.getName());
+                    currentUser.setPhone(user.getPhone());
+                    currentUser.setAvatar("https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png");
+
                     //获取角色信息
                     Map<String,Object> resMap = new HashMap<>();
                     resMap.put("authority",permissionService.listCode(user.getId()).toArray());
+                    resMap.put("currentUser",currentUser);
 //                    logger.info(Arrays.toString(userRoleService.listCode(user.getId()).toArray()));
                     result.setData(resMap);
                 }

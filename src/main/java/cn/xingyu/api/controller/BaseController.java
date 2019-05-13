@@ -32,6 +32,7 @@ public abstract class BaseController<T> {
     @GetMapping
     public Result list(Pagination<T> pagination, T t) {
         logger.info("find " + t.getClass().getSimpleName() + " by pagination");
+        logger.info("this t is =>"+t.toString());
         logger.info(pagination.toString());
         Result result = new Result();
         PageResult pageResult = service.list(pagination, t);
