@@ -17,7 +17,6 @@ public class MachineryType {
   private Long no;
   private String name;
   private String description;
-  private String testName;
 
 
 }

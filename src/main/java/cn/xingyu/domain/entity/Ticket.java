@@ -12,20 +12,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.math.BigDecimal;
 
 @Data
-public class Machinery {
+public class Ticket {
     @Id
     @KeySql(useGeneratedKeys = true,dialect=IdentityDialect.MYSQL)
     @GeneratedValue(generator = "JDBC")
   private Long id;
-  private String no;
-  private String model;
-  private String brand;
-  private Long machineryId;
-  private BigDecimal purchasingPrice;
-@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-  private Date purchasingDate;
-  private Long state;
-  private String description;
+  private Long projectId;
+  private Long ticketType;
+  private BigDecimal cost;
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date costDate;
+  private String agent;
+  private Long createUser;
+  @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+  private Date createDate;
+  private String remark;
 
 
 }

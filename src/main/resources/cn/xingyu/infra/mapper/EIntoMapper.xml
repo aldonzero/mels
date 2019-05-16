@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xingyu.infra.mapper.EIntoMapper">
+    <resultMap id="BaseResultMap" type="cn.xingyu.domain.entity.EIntoEVO">
+        <id column="id" property="id"/>
+        <id column="machinery_no" property="machineryNo"/>
+        <id column="project_name" property="projectName"/>
+        <id column="user_name" property="createUser"/>
+        <id column="into_date" property="intoDate"/>
+        <id column="create_date" property="createDate"/>
+    </resultMap>
+
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT e_into.*,project.project_name,machinery.`no` as machinery_no,`user`.`name` as user_name FROM e_into
+        LEFT JOIN project ON e_into.project_id = project.id
+        LEFT JOIN machinery ON e_into.machinery_id = machinery.id
+        LEFT JOIN `user` ON e_into.create_user = `user`.id
+        WHERE 1=1
+        <if test="machineryNo != null and machineryNo != ''">
+            AND machinery.`no` LIKE '%' #{machineryNo} '%'
+        </if>
+        <if test="projectName != null and projectName != ''">
+            AND project.project_name LIKE '%' #{projectName} '%'
+        </if>
+        <if test="pageSize != null and pageSize != 0">
+            limit #{currIndex} , #{pageSize}
+        </if>
+    </select>
+
+    <select id="listCount" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(1) FROM e_into
+        LEFT JOIN project ON e_into.project_id = project.id
+        LEFT JOIN machinery ON e_into.machinery_id = machinery.id
+        LEFT JOIN `user` ON e_into.create_user = `user`.id
+        WHERE 1=1
+        <if test="machineryNo != null and machineryNo != ''">
+            AND machinery.`no` LIKE '%' #{machineryNo} '%'
+        </if>
+        <if test="projectName != null and projectName != ''">
+            AND project.project_name LIKE '%' #{projectName} '%'
+        </if>
+    </select>
+
+</mapper>

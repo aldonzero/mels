@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xingyu.infra.mapper.TicketMapper">
+    <resultMap id="BaseResultMap" type="cn.xingyu.domain.entity.TicketEVO">
+        <id column="id" property="id"/>
+        <id column="project_name" property="projectName"/>
+        <id column="user_name" property="createUser"/>
+        <id column="type_name" property="ticketType"/>
+        <id column="cost" property="cost"/>
+        <id column="cost_date" property="costDate"/>
+        <id column="agent" property="agent"/>
+        <id column="create_date" property="createDate"/>
+        <id column="remark" property="remark"/>
+    </resultMap>
+
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT ticket.*,project.project_name,ticket_type.`name` as type_name,`user`.`name` as user_name FROM ticket
+        LEFT JOIN project ON ticket.project_id = project.id
+        LEFT JOIN ticket_type ON ticket.ticket_type = ticket_type.id
+        LEFT JOIN `user` ON ticket.create_user = `user`.id
+        WHERE 1=1
+        <if test="projectName != null and projectName != ''">
+            AND project.project_name LIKE '%' #{projectName} '%'
+        </if>
+        <if test="pageSize != null and pageSize != 0">
+            limit #{currIndex} , #{pageSize}
+        </if>
+    </select>
+
+    <select id="listCount" parameterType="map" resultType="java.lang.Integer">
+        SELECT count(1) FROM ticket
+        LEFT JOIN project ON ticket.project_id = project.id
+        LEFT JOIN ticket_type ON ticket.ticket_type = ticket_type.id
+        LEFT JOIN `user` ON ticket.create_user = `user`.id
+        WHERE 1=1
+        <if test="projectName != null and projectName != ''">
+            AND project.project_name LIKE '%' #{projectName} '%'
+        </if>
+    </select>
+
+</mapper>

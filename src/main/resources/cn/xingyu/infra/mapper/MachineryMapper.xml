@@ -26,7 +26,9 @@
         <if test="machineryId !=null">
             AND machinery.machinery_id = #{machineryId}
         </if>
-        limit #{currIndex} , #{pageSize}
+        <if test="pageSize != null and pageSize != 0">
+            limit #{currIndex} , #{pageSize}
+        </if>
     </select>
 
     <select id="listCount" parameterType="map" resultType="java.lang.Integer">
