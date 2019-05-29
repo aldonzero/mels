@@ -2,10 +2,10 @@
 spring:
   datasource:
 #   数据源基本配置
-    username: xingyulc
-    password: xingyulc
+    username: ${MYSQL_NAME}
+    password: ${MYSQL_PWD}
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/melsapp?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://${MYSQL_IP}:${MYSQL_PORT}/${MYSQL_DBNAME}?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true
     type: com.alibaba.druid.pool.DruidDataSource
 #   数据源其他配置
     initialSize: 5
