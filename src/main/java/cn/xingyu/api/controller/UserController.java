@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/user")
@@ -30,11 +32,20 @@ public class UserController extends BaseController<User> {
 
 
     @RequestMapping("/current")
-    public Result findCurrent(HttpServletRequest request) {
+    public Result findCurrent(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null){
+            response.setStatus(401);
+            try {
+                response.getWriter().append("登录过期请重新登录！");
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         User user = new User();
-        user.setId((Long) session.getAttribute("userId"));
+        user.setId(userId);
         Result result = new Result();
         user = service.findById(user);
         CurrentUser currentUser = new CurrentUser();

@@ -13,6 +13,7 @@
     <collection property="project" ofType="cn.xingyu.domain.entity.Project">
       <id property="id" column="id"/>
       <result property="no" column="project_no"/>
+      <result property="projectName" column="project_name"/>
     </collection>
     <collection property="machinery" ofType="cn.xingyu.domain.entity.Machinery">
       <id property="id" column="id"/>
@@ -22,7 +23,7 @@
 
 
   <select id="list" parameterType="map" resultMap="BaseResultMap">
-    SELECT working.*,project.`no` project_no,machinery.`no` machinery_no from working LEFT JOIN project ON working.project_id = project.id
+    SELECT working.*,project.`no` project_no,project_name,machinery.`no` machinery_no from working LEFT JOIN project ON working.project_id = project.id
     LEFT JOIN machinery ON working.machinery_id = machinery.id
     limit #{currIndex} , #{pageSize}
   </select>

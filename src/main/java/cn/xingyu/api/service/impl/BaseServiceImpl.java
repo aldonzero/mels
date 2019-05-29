@@ -33,7 +33,7 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public Integer update(T t) {
-        int result =  mapper.updateByPrimaryKey(t);
+        int result =  mapper.updateByPrimaryKeySelective(t);
         logger.info("update result :" +result);
         return result;
     }

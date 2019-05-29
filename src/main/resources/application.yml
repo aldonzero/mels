@@ -33,7 +33,7 @@ spring:
      - tk.mybatis.mapper.common.Mapper2
     notEmpty: true
 server:
-  port: 8081
+  port: 8080
   session:
     timeout: 1800
 
