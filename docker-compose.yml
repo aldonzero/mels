@@ -19,9 +19,9 @@ services:
 #    links:
 #      - xwiki-mysql-db:dbMysql
     environment:
-          - MYSQL_IP=localhost
+          - MYSQL_IP=115.159.190.82
           - MYSQL_PORT=3306
           - MYSQL_NAME=xingyulc
-          - MYSQL_PWD=xingyulc
+          - MYSQL_PWD=123456789!@QAlc
           - MYSQL_DBNAME=melsapp
-          - JAVA_IP=localhost
+          - JAVA_IP=115.159.190.82

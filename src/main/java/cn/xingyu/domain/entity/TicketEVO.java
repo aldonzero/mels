@@ -19,6 +19,10 @@ public class TicketEVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createDate;
     private String remark;
-
+    private Long state;
+    private Long auditUser;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date auditDate;
+    private String auditOption;
 
 }

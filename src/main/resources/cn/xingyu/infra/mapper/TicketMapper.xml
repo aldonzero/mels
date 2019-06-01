@@ -11,6 +11,7 @@
         <id column="agent" property="agent"/>
         <id column="create_date" property="createDate"/>
         <id column="remark" property="remark"/>
+        <id column="state"  property="state" />
     </resultMap>
 
 
@@ -22,6 +23,9 @@
         WHERE 1=1
         <if test="projectName != null and projectName != ''">
             AND project.project_name LIKE '%' #{projectName} '%'
+        </if>
+        <if test="ticketType != null and ticketType != ''">
+            AND ticket.ticket_type = #{ticketType}
         </if>
         <if test="pageSize != null and pageSize != 0">
             limit #{currIndex} , #{pageSize}
@@ -36,6 +40,9 @@
         WHERE 1=1
         <if test="projectName != null and projectName != ''">
             AND project.project_name LIKE '%' #{projectName} '%'
+        </if>
+        <if test="ticketType != null and ticketType != ''">
+            AND ticket.ticket_type = #{ticketType}
         </if>
     </select>
 

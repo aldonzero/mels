@@ -6,8 +6,8 @@ import cn.xingyu.domain.entity.CurrentUser;
 import cn.xingyu.domain.entity.User;
 import cn.xingyu.domain.entity.result.Result;
 import cn.xingyu.domain.entity.result.ResultStatus;
+import cn.xingyu.infra.utils.permission.RequirePermission;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,9 +27,6 @@ public class UserController extends BaseController<User> {
         super(service);
         this.service = service;
     }
-
-
-
 
     @RequestMapping("/current")
     public Result findCurrent(HttpServletRequest request, HttpServletResponse response) {
@@ -57,5 +54,30 @@ public class UserController extends BaseController<User> {
         result.setCode(ResultStatus.GET_SUCCESS.getStatusCode());
         result.setMsg(ResultStatus.GET_SUCCESS.getStatusMsg());
         return result;
+    }
+
+
+    @Override
+    @RequirePermission("user.select")
+    public Result findById(Long id, User user) {
+        return super.findById(id, user);
+    }
+
+    @Override
+    @RequirePermission("user.insert")
+    public Result Insert(User user) {
+        return super.Insert(user);
+    }
+
+    @Override
+    @RequirePermission("user.update")
+    public Result update(User user) {
+        return super.update(user);
+    }
+
+    @Override
+    @RequirePermission("user.delete")
+    public Result delete(Long id, User user,HttpServletResponse response) {
+        return super.delete(id, user,response);
     }
 }

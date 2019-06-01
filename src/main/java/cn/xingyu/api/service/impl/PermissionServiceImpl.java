@@ -78,5 +78,11 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission>
     public List<String> listCode(Long userId) {
         return permissionMapper.listCode(userId);
     }
+
+    @Override
+    public List<String> listCode(Long userId, String module) {
+        return permissionMapper.listPageCode(userId,module);
+    }
+
 }
 

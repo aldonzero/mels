@@ -8,5 +8,6 @@ import java.util.List;
 public interface PermissionService extends BaseService<Permission> {
 
   List<String> listCode(Long userId);
+  List<String> listCode(Long userId,String module);
  }
 

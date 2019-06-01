@@ -14,6 +14,7 @@ import tk.mybatis.mapper.entity.Example;
 
 import javax.persistence.Id;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 
 @Service
 public abstract class BaseServiceImpl<T> implements BaseService<T> {
@@ -61,6 +62,11 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         return pageResult;
     }
 
+    @Override
+    public PageResult list(Pagination<T> pagination, HashMap params) {
+       return null;
+    }
+
     public Example getExample(Example e,T t){
         return e;
     }
@@ -68,6 +74,12 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
   @Override
     public T find(T t) {
         return mapper.selectOne(t);
+    }
+
+    @Override
+    public Integer audit(T t) {
+        int result =  mapper.updateByPrimaryKeySelective(t);
+        return result;
     }
 
     /**
@@ -90,4 +102,5 @@ public abstract class BaseServiceImpl<T> implements BaseService<T> {
         }
         return 0;
     }
+
 }

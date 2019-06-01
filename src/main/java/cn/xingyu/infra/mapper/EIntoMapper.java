@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface EIntoMapper extends Mapper<EInto> {
+
     List<EIntoEVO> list(Map<String, Object> prams);
 
     Integer listCount(Map<String, Object> prams);

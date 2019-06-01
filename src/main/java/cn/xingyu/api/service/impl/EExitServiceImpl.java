@@ -36,12 +36,12 @@ public class EExitServiceImpl extends BaseServiceImpl<EExit>
     }
 
     @Override
-    public PageResult list(Pagination<EExit> pagination, EExit eExit) {
+    public PageResult list(Pagination<EExit> pagination, HashMap params) {
         Map<String, Object> prams = new HashMap<>();
         prams.put("currIndex", (pagination.getPage() - 1) * pagination.getPageSize());
         prams.put("pageSize", pagination.getPageSize());
-        prams.put("machineryNo", null);
-        prams.put("projectName", null);
+        prams.put("machineryNo", params.get("machineryNo"));
+        prams.put("projectName", params.get("projectName"));
         PageResult pageResult = new PageResult();
         pageResult.setList(mapper.list(prams));
         pageResult.setTotal(mapper.listCount(prams));

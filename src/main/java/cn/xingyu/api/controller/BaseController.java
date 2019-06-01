@@ -9,6 +9,7 @@ import cn.xingyu.domain.entity.result.Result;
 import cn.xingyu.domain.entity.result.ResultStatus;
 import cn.xingyu.api.service.BaseService;
 import cn.xingyu.infra.utils.Property;
+import cn.xingyu.infra.utils.permission.RequirePermission;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Id;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
@@ -24,6 +26,11 @@ import java.util.HashMap;
 public abstract class BaseController<T> {
     private Logger logger = (Logger) LoggerFactory.getLogger(BaseController.class);
     private BaseService<T> service;
+    public String tName;
+
+    public BaseController(T t) {
+        this.tName = t.getClass().getSimpleName();
+    }
 
     public BaseController(BaseService<T> service) {
         this.service = service;
@@ -95,7 +102,7 @@ public abstract class BaseController<T> {
     }
 
     @DeleteMapping("/{id}")
-    public Result delete(@PathVariable("id") Long id, T t) {
+    public Result delete(@PathVariable("id") Long id, T t, HttpServletResponse response) {
         Property property = new Property();
         t = (T) property.idSet(t, id);
         logger.info("Delete " + t.getClass().getSimpleName() + " with id is " + id);
@@ -107,5 +114,16 @@ public abstract class BaseController<T> {
         return result;
     }
 
-
+    @PutMapping("/audit")
+    public Result audit(@RequestBody T t){
+        logger.info("audit " + t.getClass().getSimpleName());
+        String msg = ResultStatus.AUDIT_SUCCESS.getStatusMsg();
+        if (service.audit(t) <= 0) {
+            msg = "修改失败";
+        }
+        Result result = new Result();
+        result.setCode(ResultStatus.AUDIT_SUCCESS.getStatusCode());
+        result.setMsg(msg);
+        return result;
+    }
 }
