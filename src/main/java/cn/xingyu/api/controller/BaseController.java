@@ -26,12 +26,6 @@ import java.util.HashMap;
 public abstract class BaseController<T> {
     private Logger logger = (Logger) LoggerFactory.getLogger(BaseController.class);
     private BaseService<T> service;
-    public String tName;
-
-    public BaseController(T t) {
-        this.tName = t.getClass().getSimpleName();
-    }
-
     public BaseController(BaseService<T> service) {
         this.service = service;
     }
@@ -91,6 +85,7 @@ public abstract class BaseController<T> {
     @PutMapping
     public Result update(@RequestBody T t) {
         logger.info("update " + t.getClass().getSimpleName());
+        logger.info("baseController update info is:"+t.toString());
         String msg = ResultStatus.UPDATE_SUCCESS.getStatusMsg();
         if (service.update(t) <= 0) {
             msg = "修改失败";

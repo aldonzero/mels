@@ -3,11 +3,15 @@ package cn.xingyu.api.controller;
 import ch.qos.logback.classic.Logger;
 import cn.xingyu.api.service.UserService;
 import cn.xingyu.domain.entity.CurrentUser;
+import cn.xingyu.domain.entity.PasswordEvo;
 import cn.xingyu.domain.entity.User;
 import cn.xingyu.domain.entity.result.Result;
 import cn.xingyu.domain.entity.result.ResultStatus;
-import cn.xingyu.infra.utils.permission.RequirePermission;
+import org.jasypt.util.text.BasicTextEncryptor;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +25,9 @@ import java.io.IOException;
 public class UserController extends BaseController<User> {
     private Logger logger = (Logger) LoggerFactory.getLogger(UserController.class);
 
+    @Value("${jasypt.encryptor.password}")
+    private String salt;
+
     private UserService service;
 
     public UserController(UserService service) {
@@ -32,7 +39,7 @@ public class UserController extends BaseController<User> {
     public Result findCurrent(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Long userId = (Long) session.getAttribute("userId");
-        if (userId == null){
+        if (userId == null) {
             response.setStatus(401);
             try {
                 response.getWriter().append("登录过期请重新登录！");
@@ -56,28 +63,45 @@ public class UserController extends BaseController<User> {
         return result;
     }
 
+    @PutMapping("/newPwd")
+    public Result newPassword(@RequestBody PasswordEvo passwordEvo, HttpServletRequest request, HttpServletResponse response) {
+        String msg = ResultStatus.UPDATE_SUCCESS.getStatusMsg();
+        Integer code = ResultStatus.UPDATE_SUCCESS.getStatusCode();
+        HttpSession session = request.getSession();
+        Long userId = (Long) session.getAttribute("userId");
+        if (userId == null) {
+            response.setStatus(401);
+            try {
+                response.getWriter().append("登录过期请重新登录！");
+                return null;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-    @Override
-    @RequirePermission("user.select")
-    public Result findById(Long id, User user) {
-        return super.findById(id, user);
-    }
+        User old = new User();
+        old.setId(userId);
+        old = service.find(old);
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(salt);
+        if (old != null ) {
+            String password = textEncryptor.decrypt(old.getPassword());
+            logger.info("the new password is :" + password+"newpass:"+passwordEvo.getOldPassword());
+            if (password.equals(passwordEvo.getOldPassword())){
+                old.setPassword(textEncryptor.encrypt(passwordEvo.getPassword()));
+                if (service.update(old) <= 0) {
+                    msg = "修改失败";
+                    code = -1;
+                }
+            }else {
+                code = -1;
+                msg = "旧密码出错";
+            }
+        }
 
-    @Override
-    @RequirePermission("user.insert")
-    public Result Insert(User user) {
-        return super.Insert(user);
-    }
-
-    @Override
-    @RequirePermission("user.update")
-    public Result update(User user) {
-        return super.update(user);
-    }
-
-    @Override
-    @RequirePermission("user.delete")
-    public Result delete(Long id, User user,HttpServletResponse response) {
-        return super.delete(id, user,response);
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
     }
 }

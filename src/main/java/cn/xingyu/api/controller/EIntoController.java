@@ -7,13 +7,11 @@ import cn.xingyu.domain.entity.Pagination;
 import cn.xingyu.domain.entity.result.PageResult;
 import cn.xingyu.domain.entity.result.Result;
 import cn.xingyu.domain.entity.result.ResultStatus;
-import cn.xingyu.infra.utils.permission.RequirePermission;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 @RestController
@@ -29,7 +27,6 @@ public class EIntoController extends BaseController<EInto> {
     }
 
     @Override
-//    @RequirePermission("eInto.select")
     public Result list(Pagination<EInto> pagination, EInto eInto, HttpServletRequest request) {
         pagination.setT(eInto);
         HashMap<String, Object> params = new HashMap<>();
@@ -49,23 +46,5 @@ public class EIntoController extends BaseController<EInto> {
     }
 
 
-
-    @Override
-//    @RequirePermission("eInto.insert")
-    public Result Insert(EInto eInto) {
-        return super.Insert(eInto);
-    }
-
-    @Override
-//    @RequirePermission("eInto.update")
-    public Result update(EInto eInto) {
-        return super.update(eInto);
-    }
-
-    @Override
-    @RequirePermission("eInto.delete")
-    public Result delete(Long id, EInto eInto, HttpServletResponse response) {
-        return super.delete(id, eInto, response);
-    }
 }
 

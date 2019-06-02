@@ -1,29 +1,30 @@
 package cn.xingyu.api.controller;
- 
- import ch.qos.logback.classic.Logger;
- import cn.xingyu.api.service.EExitService;
- import cn.xingyu.domain.entity.EExit;
- import cn.xingyu.domain.entity.Pagination;
- import cn.xingyu.domain.entity.result.PageResult;
- import cn.xingyu.domain.entity.result.Result;
- import cn.xingyu.domain.entity.result.ResultStatus;
- import org.slf4j.LoggerFactory;
- import org.springframework.web.bind.annotation.RequestMapping;
- import org.springframework.web.bind.annotation.RestController;
 
- import javax.servlet.http.HttpServletRequest;
- import java.util.HashMap;
+import ch.qos.logback.classic.Logger;
+import cn.xingyu.api.service.EExitService;
+import cn.xingyu.domain.entity.EExit;
+import cn.xingyu.domain.entity.Pagination;
+import cn.xingyu.domain.entity.result.PageResult;
+import cn.xingyu.domain.entity.result.Result;
+import cn.xingyu.domain.entity.result.ResultStatus;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @RestController
- @RequestMapping("/eExit")
- public class EExitController extends BaseController<EExit> {
- 	private Logger logger = (Logger) LoggerFactory.getLogger(EExitController.class);
+@RequestMapping("/eExit")
+public class EExitController extends BaseController<EExit> {
+    private Logger logger = (Logger) LoggerFactory.getLogger(EExitController.class);
 
- 	private EExitService service;
- 	public EExitController(EExitService service) {
- 		super(service);
- 		this.service = service;
- 	}
+    private EExitService service;
+
+    public EExitController(EExitService service) {
+        super(service);
+        this.service = service;
+    }
 
     @Override
     public Result list(Pagination<EExit> pagination, EExit eExit, HttpServletRequest request) {
@@ -43,5 +44,7 @@ package cn.xingyu.api.controller;
         result.setMsg(ResultStatus.GET_SUCCESS.getStatusMsg());
         return result;
     }
+
+
 }
 

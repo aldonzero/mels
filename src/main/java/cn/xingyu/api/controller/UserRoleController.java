@@ -7,6 +7,7 @@ import cn.xingyu.domain.entity.UserRoleEVO;
 import cn.xingyu.domain.entity.result.PageResult;
 import cn.xingyu.domain.entity.result.Result;
 import cn.xingyu.domain.entity.result.ResultStatus;
+import cn.xingyu.infra.utils.permission.RequirePermission;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +57,8 @@ public class UserRoleController {
         result.setMsg(msg);
         return result;
     }
+
+
 
 }
 

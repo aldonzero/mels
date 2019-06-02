@@ -15,4 +15,6 @@ public class MachineryController extends BaseController<Machinery> {
     public MachineryController(MachineryService service) {
         super(service);
     }
+
+
 }
